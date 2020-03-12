@@ -40,27 +40,7 @@ class App extends Component { // 1
             </form>) // 3
         } // 3
         return (<Content />) // 3
-    }
-}
+    } // 3
+} // 1
 
 export default App // 1
-
-/* meta
-  ({
-    text:
-    {
-      1: `The App component is the top level component of this application.
-      We are importing the Content component, which will actually display the content.
-      The App component is mainly concerned with login.`,
-      2: `The state will store the usernameInput and passwordInput, which represent what
-      the user will enter in the login form, as well as the actual username when login
-      is successful`,
-      3: `In the render, we check if the user has signed in. If they haven't, we present them
-      with a sign in form. If they have signed in, we show them the content.`,
-      4: `This is the method used to update the usernameInput property of the state.`,
-      5: `This is the method used to update the passwordInput property of the state.`,
-
-    }
-
-  })
-  */

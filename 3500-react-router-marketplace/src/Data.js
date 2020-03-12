@@ -1,23 +1,24 @@
-let initialItems = [{ 
-    description: "Nice boats. 50% off. wow.", 
-    price: 10000, 
-    image: "/boat.png", 
-    id: "asewq", 
-    sellerId: "ewio" 
-}, { 
-    id: "wqwasq", 
-    description: "Lawn chairs", 
-    price: 50, 
-    image: "/lawnchair.jpg", 
-    sellerId: "xcvb" 
-}] 
-let initialSellers = [{ 
-    id: "ewio", 
-    name: "Jack Frost", 
-    rating: "5 stars", 
-}, { 
-    id: "xcvb", 
-    name: "Hank Green", 
-    rating: "2 stars", 
-}] 
-export { initialItems, initialSellers } 
+let initialItems = [{ // 1
+    description: "Nice boats. 50% off. wow.", // 2
+    price: 10000, // 4
+    image: "/boat.png", // 4
+    id: "asewq", // 2
+    sellerId: "ewio" // 3
+}, { // 1
+    id: "wqwasq", // 5
+    description: "Lawn chairs", // 5
+    price: 50, // 5
+    image: "/lawnchair.jpg", // 5
+    sellerId: "xcvb" // 5
+}] // 1
+
+let initialSellers = [{ // 1
+    id: "ewio", // 6
+    name: "Jack Frost", // 7
+    rating: "5 stars", // 7
+}, { // 1
+    id: "xcvb", // 8
+    name: "Hank Green", // 8
+    rating: "2 stars", // 8
+}] // 1
+export { initialItems, initialSellers } // 1
