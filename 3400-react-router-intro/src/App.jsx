@@ -1,4 +1,4 @@
-import React, { Component } from 'react' // 1
+import React from 'react' // 1
 import { BrowserRouter, Route, Link } from 'react-router-dom' // 1
 let renderRoot = () => { // 3
     return (<div> {/* 3 */}
@@ -21,13 +21,11 @@ let renderItem = routerData => { // 10
     } // 12
     return (<div> Unknown item </div>) // 13
 } // 10
-class App extends Component { // 1
-    render() { // 1
-        return (<BrowserRouter><div> {/* 2 */}
-            <Route exact={true} path='/' render={renderRoot} /> {/* 5 */}
-            <Route exact={true} path='/allItems' render={renderAllItems} /> {/* 8 */}
-            <Route exact={true} path='/item/:itemId' render={renderItem} /> {/* 9 */}
-        </div></BrowserRouter>) // 2
-    } // 1
+function App() { // 1
+    return (<BrowserRouter><div> {/* 2 */}
+        <Route exact={true} path='/' render={renderRoot} /> {/* 5 */}
+        <Route exact={true} path='/allItems' render={renderAllItems} /> {/* 8 */}
+        <Route exact={true} path='/item/:itemId' render={renderItem} /> {/* 9 */}
+    </div></BrowserRouter>) // 2
 } // 1
 export default App // 1

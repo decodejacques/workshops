@@ -1,5 +1,5 @@
 import './App.css'; /* 1 */
-import React, { Component } from 'react'; /* 1 */
+import React from 'react'; /* 1 */
 import { Route, BrowserRouter } from 'react-router-dom' /* 1 */
 import Seller from './Seller.jsx' /* 1 */
 import Item from './Item.jsx' /* 1 */
@@ -24,17 +24,15 @@ let renderSeller = routerData => { /* 8 */
   return (<Seller seller={candidates[0]} />) /* 11 */
 }  /* 8 */
 
-class App extends Component { /* 1 */
-  render() { /* 2 */
-    return ( /* 2 */
-      <BrowserRouter> {/* 2 */}
-        <div> {/* 2 */}
-          <Route exact={true} path='/' render={renderAllItems} /> {/* 3 */}
-          <Route exact={true} path='/seller/:sid' render={renderSeller} /> {/* 7 */}
-        </div> {/* 2 */}
-      </BrowserRouter> /* 2 */
-    ); /* 2 */
-  } /* 2 */
+function App() { /* 1 */
+  return ( /* 2 */
+    <BrowserRouter> {/* 2 */}
+      <div> {/* 2 */}
+        <Route exact={true} path='/' render={renderAllItems} /> {/* 3 */}
+        <Route exact={true} path='/seller/:sid' render={renderSeller} /> {/* 7 */}
+      </div> {/* 2 */}
+    </BrowserRouter> /* 2 */
+  ); /* 2 */
 } /* 1 */
 
 export default App; /* 1 */

@@ -10,7 +10,7 @@ Simple marketplace (react router)
         src/App.jsx
 {/*. 1 */}
         We import the libraries we need. The react-router-dom library
-                will be used to deal with links.
+                will be used to deal with links. We create a component and export it.
         
 {/*. 2 */}
         If we want to se the react-router-dom library functionalities, we need

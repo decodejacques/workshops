@@ -156,7 +156,7 @@ In this file we create and export the store. We need to use createStore to creat
 {/*. 2 */}
 The reducer is a function that takes a state and an action. An action is just an object with a <code>{`type`}</code> property.
             It potentially returns a new object. The state of the store will then refer to this new object.
-            To activate the reducer, a component needs to call this.props.dispatch and pass the action.
+            To activate the reducer, a component needs to call dispatch and pass the action.
             The reducer then gets called with the current state of the store and the action. The reducer
             is referenced when the store is created (in later slides)
 
@@ -199,23 +199,20 @@ This argument lets you use redux developer tools, which is very, very useful. Yo
 {/*. file-path */}
 src/App.jsx
 {/*. 1 */}
-We'll be importing connect from react-redux so that our
+We'll be importing useSelector from react-redux so that our
          component can access data in the store. Specifically, we'll want to know whether
          or not the user has logged in yet
 
-{/*. 2 */}
-In the virtual DOM, The UnconnectedApp nodes will be a child of
-         connect(UnconnectedApp) nodes.
-         Through this arragement, the connect(UnconnectedApp) component
-         will give props to UnconnectedApp nodes.
-         Namely, the lgin prop. The value of that prop depends
-         on the store. More specifically, it depends on the loggedIn property
-         of the store. Initially, state.loggedIn is false, but it
-         changes to true when the user logs in
+    {/*. 2 */}
+    What we present to the user depends on whether or not the user is logged in. 
+    That information is located in the state of the store. 
+    By using useSelector, we get access to that information. Furthermore, every time the data changes,
+    the component will get rerendered.
+         
          
 
 {/*. 3 */}
-The value of this.props.lgin reflects whether or not a user has logged
+The value of lgin reflects whether or not a user has logged
             in. If the user has logged in, you want to display the chat messages and the
             form to send a message to the chat. If the user has not logged in,
             you want to display signup and login forms.
@@ -233,14 +230,12 @@ The value of this.props.lgin reflects whether or not a user has logged
 {/*. file-path */}
 src/Login.jsx
 {/*. 1 */}
-The UnconnectedLogin nodes will each be a child of connect(UnconnectedLogin) in the virtual DOM. The reason is that
-we want to be able to dispatch actions to the reducer. This is why we use connect and this is why
-it is the return value of connect that is exported. The only prop that will be passed to UnconnectedLogin is dispatch
-since we're not passing a mapStateToProps function. We will call dispatch when the user
-successfully logs in and we need to update the store to reflect this fact. This will happen when the form is submitted 
+We have here a component with state object with two properties : username and password.
+For each property of the state, we have a handler. 
 
+    
 {/*. 2 */}
-The handleSubmit method starts off in the normal way
+The handleSubmit function starts off in the normal way
 
 {/*. 3 */}
 We make the fetch request. In the body of the fetch request we put the information needed to successfully log in the user.
@@ -293,7 +288,7 @@ When the form is submitted, send an HTTP request to the /signup POST endpoint wi
 {/*. file-path */}
 src/ChatForm.jsx
 {/*. 1 */}
-Standard form component. The only state is <code>{`message`}</code>. The only thing that is different from
+Standard form component. The only state is <code>{`message`}</code>. The only thing that is different 
             for this component is the onSubmit function
 
 {/*. 2 */}
@@ -316,22 +311,19 @@ The onSubmit function starts off by calling preventDefault to prevent
 {/*. file-path */}
 src/ChatMessages.jsx
 {/*. 1 */}
-This UnconnectedChatMessages component
-             will display all the messages in the chat. To do so, it needs data from the store.
-             To get this data, we pass it to connect, which creates a new component called connect(UnconnectedChatMessages).
-             In the virtual DOM, every node of this component will have an UnconnectedChatMessages child.
-             Furthermore, it will pass a <code>{`messages`}</code> prop to that child. The value of that prop is <code>{`state.msgs`}</code>, which changes
-             every time the reducer receives an object with a <code>{`type`}</code> prop with a value of <code>{`set-messages`}</code>. It also
-             passes a <code>{`dispatch`}</code> prop to the UnconnectedChatMessages child, which enables the child to send
-             actions to the reducer.
-             
+This ChatMessages component
+             will display all the messages in the chat. We need the useSelector function to retrieve data
+             from the store and automatically rerender the component when the data is updated.
+             We need the actual store because its dispatch property enables us to dispatch actions
+             to the store.
 
 {/*. 2 */}
-We define the componentDidMount method. If a method has
-            this name then it will get called after the first render. Inside
-            the body of this method we will use setInterval to continuously
-            get messages from the server
-
+We use useEffect to run a function right after the component first renders. That is, after the ChatMessage function is called and the 
+DOM is updated. Inside
+                the body of this function we will use setInterval to continuously
+                get messages from the server. The second argument to useEffect is an empty array, which 
+                is the argument to pass if you want it to run only after the first render.
+    
 {/*. 3 */}
 We define the function that makes a fetch request. As we will see, it will get called at regular intervals
 
@@ -354,10 +346,12 @@ We dispatch an object with <code>{`type`}</code> <code>{`"set-messages"`}</code>
 Thanks to setInterval, the whole process will happen every 500ms
 
 {/*. 9 */}
-The render method returns a div
+The functional component returns a div
 
 {/*. 10 */}
-Inside the div we put all the messages as li elements wrapped in a ul element
+Inside the div we put all the messages as li elements wrapped in a ul element. To get the latest
+messages inside the state of the store, we use useSelector and we pass a function that will return
+the messages.
 
 
 
@@ -400,9 +394,6 @@ Why do we need redux for this project?
 Which components read from the store and which components modify the store and which do both?
 
 {/*. q */}
-When do we use connect and what is it for?
-
-{/*. q */}
 How are the following terms related? dispatch, action, reducer, store
 
 {/*. q */}
@@ -412,10 +403,8 @@ Why do we need to call fetch at every 500ms in this project? Is there an alterna
 How many forms are there and what does each form do?
 
 {/*. q */}
-How is the value of the lgin prop of UnconnectedApp related to the store? Where is this relationship described?
+How is the value of the lgin variable defined in the App functional component related to the store? Where is this relationship described?
 
-{/*. q */}
-Some connected components have a mapStateToProps but others don't. Why is that?
 
 
 

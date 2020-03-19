@@ -1,5 +1,6 @@
 import React, { useState } from 'react' // 1
 import Content from './Content.jsx' // 1
+import produce from 'immer' // 1
 function App() { // 1
     const [state, setState] = useState({ // 2
         usernameInput: "", // 2
@@ -9,12 +10,12 @@ function App() { // 1
 
     const usernameChange = evt => { // 4
         setState(produce(state, st => { // 4
-            state.usernameInput = evt.target.value // 4
+            st.usernameInput = evt.target.value // 4
         }))// 4
 
     } // 4
     const passwordChange = evt => { // 5
-        setState(state => produce(state, st => { // 5
+        setState(produce(state, st => { // 5
             st.passwordInput = evt.target.value // 5
         })) // 5
     } // 5
@@ -37,7 +38,7 @@ function App() { // 1
         } // 9
     } // 6
 
-    if (state.username === undefined) { // 3
+    if (state.username === null) { // 3
         return (<form onSubmit={submitHandler}> {/* 3 */}
             Username <input type="text" onChange={usernameChange} />  {/* 4 */}
             Password <input type="text" onChange={passwordChange} /> {/* 4 */}

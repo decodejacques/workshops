@@ -85,7 +85,7 @@ We import the React library (why do we need to import React if we don't use it e
     and export it
 
 {/*. 2 */}
-The component has a render method that returns a div react element
+The functional component returns a div react element
 
 {/*. 3 */}
 There are 3 props here:
@@ -119,14 +119,13 @@ src/Seller.jsx
 We import the libraries, create a component and export it.
     (Quiz: does the component name matter?) 
 
-{/*. 2 */}
-The component only has a render method
 
-{/*. 3 */}
-It returns a div react element. I added a className to make it look nice. The css classes
+{/*. 2 */}
+The functional component returns a div react element. 
+I added a className to make it look nice. The css classes
     card and center are located in App.css
 
-{/*. 4 */}
+{/*. 3 */}
 There is a single prop, which we have called seller.
     Every time this component is used, this prop must be provided. When the prop is provided
     it must refer to an object. This object must have at least two properties
@@ -159,7 +158,7 @@ Using npm, you will need to install the react-router-dom module. We also create 
 
 
 {/*. 2 */}
-The component has a render method which returns a react element. The react element is created from the BrowserRouter component.
+The functional component returns a react element. The react element is created from the BrowserRouter component.
 We do this because we need to use the Route and Link components and we can only do that if they are placed under the BrowserRouter component
 in the virtual DOM.
 

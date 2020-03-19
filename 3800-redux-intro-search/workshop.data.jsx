@@ -47,7 +47,7 @@ In this file we create and export the store. We need to use createStore to creat
 {/*. 2 */}
 The reducer is a function that takes a state and an action. An action is just an object with a <code>{`type`}</code> property.
             It potentially returns a new object. The state of the store will then refer to this new object.
-            To activate the reducer, a component needs to call this.props.dispatch and pass the action.
+            To activate the reducer, a component needs to call dispatch and pass the action.
             The reducer then gets called with the current state of the store and the action. The reducer
             is referenced when the store is created
 
@@ -131,22 +131,21 @@ In the virtual DOM, App nodes will have two children: a Search node and a Search
 {/*. file-path */}
 src/Search.jsx
 {/*. 1 */}
-We need to import connect so that we can use the data from the store in our component and also
+We need to import useSelector so that we can use the data from the store in our component. The
+store is imported so that we can 
             dispatch actions to the reducer so that the state of the store can get updated.
-            We need to install the react-redux library
+            Don't forget to install the react-redux library.
 
 {/*. 2 */}
-The UnconnectedSearch component will receive props from connect. The props it will receive are query, minPrice and maxPrice.
-        The value of the props depends on the data in the store. Every time the store gets modified, the mapState to props function gets called
-        and it returns an object. Every property of that object becomes a prop of the UnconnectedSearch node in the virtual DOM. To find out
-        the value of the prop, we need at the value of that property, which depends on that state of the store. The st parameter in
-        the mapStateToProps function represents the state of the store. There is a second reason we connect
-        this component: connect will provide a dispatch prop to the component that can be used to dispatch actions.
+The Search component uses the useSelector hook to extract data from the store. Every time the store
+is updated, the argument passed to useSelector is called. If that value is different from the previous time it was called,
+the component is rerendered. useSelector returns the value returned by its argument.
+ We create 3 variables that will store the data we extract from the store: query, minPrice and maxPrice.
         
 
 {/*. 3 */}
-We have a text input element. Everytime it is modified, the handleQuery method is called. The value
-            of the text input is equal to this.props.query. The value attribute is optional at the moment, but would be
+We have a text input element. Everytime it is modified, the handleQuery function is called. The value
+            of the text input is equal to query. The value attribute is optional at the moment, but would be
             necessary if we wanted to add a button to clear the input box. Every time the onChange handler is called,
             an action is dispatched to the reducer which will update the state of the store. The type of the action is
             <code>{`query`}</code> and, by looking at the reducer function store.js, we see that the searchQuery property of the state will get updated. 
@@ -169,25 +168,24 @@ Modifying the maximum price input box dispatches an action to the reducer which 
 {/*. file-path */}
 src/SearchResults.jsx
 {/*. 1 */}
-We need to import the connect module so that our component can read data from the store.
+We need to import the useSelector function so that our component can read data from the store.
 
 {/*. 2 */}
-In the virtual DOM, we see that the UnconnectedSearchResults nodes will receive
-        a query prop from connect by looking at the mapStateToProps function. The st parameter
-         of that function represents the state of the store. The value of that prop depends on the
-          the searchQuery property of the state of the store.
+ The SearchResults functional component calls useSelector every time it is called,
+ which is every time the component is rendered. Every time it is called, the call to useSelector
+ will make sure it always has the latest value of the searchQuery property of the state of the store. 
+ Furthermore, every time the searchQuery property is modified, the component is rerendered.
+
+ 
+ 
+       
 
 {/*. 3 */}
-This component has no state and no other methods than render
-
-{/*. 4 */}
 We only want items who name matches the search query so we use
-            filter to select only those items. The query prop is populated by
-            the mapStateToProps function below and it refers to the searchQuery property of the
-            state of the store. We are currently no filtering by price. You'll need to
+            filter to select only those items. We are currently no filtering by price. You'll need to
             do that in the exercises 
 
-{/*. 5 */}
+{/*. 4 */}
 Finally we display the items. We use map to convert the array of items to an array
             of react elements. Each item has a name property (see data.js)
 
@@ -206,17 +204,10 @@ Finally we display the items. We use map to convert the array of items to an arr
 Go over these questions to deepen your understanding
 
 {/*. q */}
-Why do we need to use connect? Which components need to be connected and why?
-
-{/*. q */}
-mapStateToProps returns an object. What do the properties of this object represent?
-
-{/*. q */}
 How does information flow from the Search component to the SearchResults component? Describe every step.
 
 {/*. q */}
-Why do we need the value attribute on the input elements of the Search component? If we removed it, 
-        would we still need mapStateToProps when connecting that component?
+Why do we need the value attribute on the input elements of the Search component? 
 
 {/*. q */}
 We could have not used redux and instead have 1 big component that does everything. Why is this a bad idea?
@@ -224,9 +215,6 @@ We could have not used redux and instead have 1 big component that does everythi
 {/*. q */}
 True or false: the SearchResult node is rerendered every time a user changes one of the input boxes
         under the Search node 
-
-{/*. q */}
-When we connect a component, do we always need to provide a mapStateToProps?
 
 {/*. q */}
 Why is redux necessary for this project?

@@ -1,5 +1,5 @@
 import React, { useState } from 'react' // 1
-
+import produce from 'immer' // 1
 function NewPost() { // 1
     const [state, setState] = useState({ // 2
         file: "", // 2

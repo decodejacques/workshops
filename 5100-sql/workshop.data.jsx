@@ -1,8 +1,8 @@
 <>
 {/*. id */}
-workshops-mongodb
+workshops-sql-posts
 {/*. name */}
-MongoDB
+SQL
 {/*. exercises */}
 
 {/*. desc */}
@@ -10,17 +10,13 @@ MongoDB
 Follow these instructions to get the project running
 
 {/*. q */}
-Create a new project in mongodb atlas following [this link](https://docs.google.com/document/d/1w6F9jTV0cYAmXWX9wcmGJe51Ugea8ZdFckTKGmkrDtU/edit?usp=sharing). Place the url in the approriate place in the server.js file.
+Go to digital ocean and rent a MySQL server for a month. Create a database called post_db. Create a user. Give that user access to post_db.
 
-{/*. q */}
-Create a new document in the `users` collection with a username and password. Instructions [here](https://docs.google.com/document/d/11kL2MP8STfQK3Wd4IQb-vHWMj2a4PSdDX13oOYeWNTc/edit?usp=sharing)
+      {/*. q */}
+      In the server.js file, enter the IP address of the server for <code>HOST_NAME</code> and the username for <code>USERNAME</code> and the password for <code>PASSWORD</code>
 
-{/*. q */}
-Get your mongodb url and place it in your server.js file, then run your project. You can log in with the username and
-    password that you added to the `users` collection
-
-{/*. q */}
-Add three posts and then modify 2 of them
+      {/*. q */}
+      Run your web application. Add three posts and then modify 2 of them.
 
 
 
@@ -43,60 +39,58 @@ We're going to use multer because we'll be uploading images. Multer is going to 
       in the uploads directory. Each of those files will become endpoints because of express.static.
 
 {/*. 3 */}
-We'll be using the mongodb library to communicate with mongodb. The mongodb module is an object.
-      The two interesting properties of that object are MongoClient, which is used to initiate the connection,
-      and ObjectID, which is used to convert a string to a Mongo id (you will see
-        it in action in later slides)
-
+      We'll be using the <code>mysql2</code> library to communicate with the MySQL server. It is superior to the older <code>mysql</code> library in that
+      it uses promises.
+      
 {/*. 4 */}
-dbo is an object that will get populated once the connection to the
-      database has been initiated. We're calling our database media-board, but you can use any
-      name. If it doesn't exist, it is automatially created. There is a document
-      that explains how to get the url string.
+The connection variable will refer to an object
+with methods that will let use interact with the database.
 
 {/*. 5 */}
-The all-posts endpoint returns all the posts in the posts collection. We use the find
-      method. By passing the empty object to the find method, we are retrieving everything
-      in that collection. We need to use the toArray method, which lets use
-      manipulate the result as an array.
-
-{/*. 6 */}
-There might be an error. For example, the database connection might have
-      been interrupted. In that case, console log it.
+      The all-posts endpoint returns all the posts in the posts collection. <code>connection.promise().query</code> refers to a function
+      that returns a promise, so we can await it. The argument to that function is any SQL query. The promise resolves to an array. The first index of that array
+      are the rows. By convention, SQL keywords are uppercased, but we could just as well have lowercased them.
+      {/*. 6 */}
+      queryResult refers to an array and the first element of that array are the rows resulting from running the query on the previous line.
 
 {/*. 7 */}
-For debugging purposes, console log the posts and then send back the result
+For debugging purposes, console log the posts. We then send back the result
       to the client. Since we're sending back an array, we first have to stringify it.
 
 {/*. 8 */}
 The login endpoint sees if the username and password provided match what's in the database. As a convenience, we declare some variables.
 
 {/*. 9 */}
-We use findOne to find a single document whose username property matches the username sent by the client.
-      findOne, as opposed to find, only gets a single document. 
-
+We use a standard select query to find the row whose username column matches the username sent by the client.
+Notice the question mark <code>{`?`}</code> in the query. That question mark will be replaced by
+      the contents of the name variable.
+      
+      
 {/*. 10 */}
-An error might have occurred. If so, print it to the console.
-
-{/*. 11 */}
-If no user was found, then the user variable will refer to null. In that case, console log the error.
-         Otherwise, check if the password in the database matches the password supplied by the user
+We get the resulting row array and check if it is empty. If it is empty, it means
+there is no matching username in our database.
+      {/*. 11 */}
+      Since username is a primary key, there can only be one row with a matching username.
+      We extract that row and extract the value of the pwd column. We compare that value with the
+      password provided with the user and respond accordingly.
 
 {/*. 12 */}
-This endpoint is used for creating new posts. The console log is for debugging purposes. Posts have files
-      and you see that the "img" string is used in the corresponding fetch request (see frontend)
+This endpoint is used for creating new posts. The console log is for debugging purposes. The user can
+upload files. You can check the corresponding frontend files for what the "img" string refers to.
+      
 
 {/*. 13 */}
 We get the description and the file. The file object has a filename property, which is the name inside the uploads directory.
       Because of the express.static located above, each file in that directory has an endpoint that starts with
       /uploads. We store that path in the database.
 
-{/*. 14 */}
-We insert the document in the posts collection in our MongoDB server using the insertOne method.
-     MongoDB will automatically add a _id property
-      to the object to uniquely identify it.
-      We send back a response to the frontend. It doesn't really matter what
-      we send back since it's not processed (see frontend) 
+      {/*. 14 */}
+      We insert the data in the <code>post</code> table. 
+      There are two pieces of data submitted by the user, so we need two question marks.
+      The first question mark corresponds to the <code>descr</code> column and the second
+      question mark corresponds to the <code>frontend_path</code> column because that's the order in which the columns are listed.
+      The second argument to query is an array. The first element of the array corresponds to the first question mark and the second
+      element of the array corresponds to the second question mark. 
 
 {/*. 15 */}
 This endpoint is used to update an existing post
@@ -105,11 +99,8 @@ This endpoint is used to update an existing post
 We create variables as a convenience
 
 {/*. 17 */}
-We update one document in the collection. We want to update the one with an _id that matches the
-      id supplied by the frontend. The frontend sends the id as a string, so we need to convert
-      it to a mongo id using the ObjectID function imported above. The second argument
-      of updateOne describes how we want to modify the document. More precisely, we're telling it
-      to set the description property of the document to the contents of the desc variable defined above.
+We update one document in the collection. We want to update the one with an post_id that matches the
+      id supplied by the frontend. The syntax is <code>UPDATE table_name SET column_name = value WHERE column_name = value</code>
 
 
 
@@ -137,15 +128,15 @@ We check if the user has signed in. If they haven't, we present them
       with a sign in form. If they have signed in, we show them the content.
 
 {/*. 4 */}
-This is the method used to update the usernameInput property of the state.
+This is the function used to update the usernameInput property of the state.
 
 {/*. 5 */}
-This is the method used to update the passwordInput property of the state.
+This is the function used to update the passwordInput property of the state.
 
 {/*. 6 */}
-In the form submit handler, referenced in the render method, we have to prevent
+In the form submit handler we have to prevent
       the default action so that the page doesn't reload. We create a variable to reference the username
-      because it will be used in several places and because of the asynchronous nature of this method
+      because it will be used in several places and because of the asynchronous nature of this function
 
 {/*. 7 */}
 We create a FormData object and attach two pieces of data, labeled <code>{`username`}</code> and <code>{`password`}</code> 
@@ -156,7 +147,7 @@ We make a fetch request. In the body of the fetch request is the FormData that w
 
 {/*. 9 */}
 If the the login is successful, we update the state with the username so that
-      the Content is displayed instead of the login form in the render method.
+      the Content is displayed instead of the login form.
 
 
 
@@ -177,14 +168,14 @@ The content component will display the posts and also
 The initial state has posts as the empty array
 
 {/*. 3 */}
-The reload method fetches all the posts from the backend and
+The reload function fetches all the posts from the backend and
       then sets the state with the posts. (see server.js for details).
       In other words, the user has to press the button to load all the posts.
 
 {/*. 4 */}
 We will display a button to load all the posts. Futhermore, we also
       display the posts and the component to create a new post. The posts
-      are only displayed when the user presses the load button and the
+      are only displayed when the user presses the reload button and the
       user has to press the button every time they want to get the
       latest post.
 
@@ -247,8 +238,8 @@ This function modifies the description in the state
 
 {/*. 4 */}
 When the new description is submitted, an HTTP request is sent to the server. The response is ignored. The id of the post
-      is located in the contents prop. Looking at Content.jsx, this prop corresponds to a document in our MongoDB database.
-      All documents in the MongoDB database have an _id property that is set by MongoDB.
+      is located in the contents prop. Looking at Content.jsx, this prop corresponds to a row in our MySQL database.
+      
 
 {/*. 5 */}
 We display the description, an image and a button to change the description.
@@ -281,14 +272,8 @@ Boilerplate stuff. The reloadMagic is what makes the page reload when the backen
 
 Go over these questions to deepen your understanding
 
-{/*. q */}
-What mongodb methods did we use and what does each one do?
 
-{/*. q */}
-Which method do we use to insert a document in a collection?
 
-{/*. q */}
-If a collection or database is not created, does mongodb just create it as needed?
 
 {/*. q */}
 Does each uploaded file get its own endpoint?
@@ -324,20 +309,21 @@ Add the person's username beside their posts.
 Right now there's no way to sign up! Add a signup form.
 
 {/*. q */}
-Add a delete button to delete all the posts. Hint: google `delete document mongodb`.
+Add a delete button to delete all the posts. Hint: google `delete all rows mysql`.
 
 {/*. q */}
 Add a way to upload audio files as well as images. Hint: google `html5 audio` 
 
 {/*. q */}
-Add a way to delete a single post. Hint: google `delete document mongodb`. 
+Add a way to delete a single post. Hint: google `delete row mysql`. 
 
 {/*. q */}
 Make it so that you can change the image of a post.
 
 {/*. q */}
-When a person signs up, their username is stored in mongodb. What if someone gets access to the database?
-    This is very dangerous. Instead of storing the password, store the hash of the password.
+When a person signs up, their username is stored in MySQL. What if someone gets access to the database?
+    This is very dangerous. Instead of storing the password, store the hash of the password. 
+    Use the sha1 library to store the hash of the password instead of the actual password.
 
 
 

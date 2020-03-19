@@ -1,19 +1,17 @@
 import './main.css' // 1
-import React, { Component } from 'react'  // 1
+import React from 'react'  // 1
 import { videos } from './Data.jsx' // 2
 import Video from './Video.jsx' // 2
 
-class App extends Component { // 3
-    render() { // 4
-        return (<div>  {/* 5 */}
-            {videos.map( // 6
-                vd => { // 6
-                    return (<Video /* 6 */
-                        header={vd.name} /* 6 */
-                        videoId={vd.id} /* 6 */
-                        footer={vd.caption} />) /* 6 */
-                })} {/* 6 */}
-        </div>) // 5
-    } // 4
+function App() { // 3
+    return (<div>  {/* 4 */}
+        {videos.map( // 5
+            vd => { // 5
+                return (<Video /* 5 */
+                    header={vd.name} /* 5 */
+                    videoId={vd.id} /* 5 */
+                    footer={vd.caption} />) /* 5 */
+            })} {/* 5 */}
+    </div>) // 5
 } // 3
-export default App // 7
+export default App // 6

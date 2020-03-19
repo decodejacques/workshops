@@ -1,25 +1,28 @@
-class Enemy { 
-        update(timeDiff) { 
-                this.y = this.y + timeDiff * this.speed 
-                this.domElement.style.top = this.y + "px" 
-                if (this.y > GAME_HEIGHT) { 
-                        this.root.removeChild(this.domElement) 
-                        this.destroyed = true 
-                } 
+let createEnemy = (theRoot, enemySpot) => { 
+        let x = enemySpot * ENEMY_WIDTH 
+        let y = -ENEMY_HEIGHT 
+        let domElement = document.createElement("img") 
+        domElement.src = "images/enemy.png" 
+        domElement.style.position = "absolute" 
+        domElement.style.left = x + "px" 
+        domElement.style.top = y + "px" 
+        domElement.style.zIndex = 5 
+        theRoot.appendChild(domElement) 
+        return { 
+                domElement: domElement, 
+                root: theRoot, 
+                spot: enemySpot,  
+                x: x,  
+                y: y, 
+                destroyed: false, 
+                speed: Math.random() / 2 + 0.25 
         } 
-        constructor(theRoot, enemySpot) { 
-                this.root = theRoot 
-                this.spot = enemySpot 
-                this.x = enemySpot * ENEMY_WIDTH 
-                this.y = -ENEMY_HEIGHT 
-                this.destroyed = false 
-                this.domElement = document.createElement("img") 
-                this.domElement.src = "images/enemy.png" 
-                this.domElement.style.position = "absolute" 
-                this.domElement.style.left = this.x + "px" 
-                this.domElement.style.top = this.y + "px" 
-                this.domElement.style.zIndex = 5 
-                theRoot.appendChild(this.domElement) 
-                this.speed = Math.random() / 2 + 0.25 
+} 
+let updateEnemy = (enemy, timeDiff) => { 
+        enemy.y = enemy.y + timeDiff * enemy.speed 
+        enemy.domElement.style.top = enemy.y + "px" 
+        if (enemy.y > GAME_HEIGHT) { 
+                enemy.root.removeChild(enemy.domElement) 
+                enemy.destroyed = true 
         } 
 } 
